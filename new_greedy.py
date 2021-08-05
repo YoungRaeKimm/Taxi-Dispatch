@@ -360,6 +360,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         self.divide_district()
 
     def divide_district(self):
+        tmp_len = 0
         for i in range(self.episode_time):  # 행 시간 열 지역에 따른 수요, 공급
             tmp_demand = self.demand[self.demand[:, 0] == str(i)]
             tmp_supply = self.supply[self.supply[:, 0] == str(i)]
@@ -368,14 +369,16 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 tmp.append(tmp_demand[tmp_demand[:, 2] == self.section_dict[j]])
             self.demand_hour.append(tmp)
 
-            tmp_len = 0
             tmp = []
             for j in range(self.numsection):
-                tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
-                # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
-                tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                if i < 20:
+                    tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                    # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
+                    tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                else:
+                    tmp.append([])
             self.supply_hour.append(tmp)
-            # print('total len {} time {}'.format(tmp_len, i))
+        print('total len {}'.format(tmp_len))
 
 
         self.demand_hour = np.array(self.demand_hour,dtype=object)
