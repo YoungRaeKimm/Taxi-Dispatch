@@ -376,7 +376,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                     # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
                     tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
                 else:
-                    tmp.append([])
+                    tmp.append(np.reshape(np.array([]),(0,4)))
             self.supply_hour.append(tmp)
         print('total len {}'.format(tmp_len))
 
@@ -579,7 +579,7 @@ if __name__ == "__main__":
     plt.title('Best action count in first simulation')
     plt.xlabel('action index')
     plt.ylabel('count')
-    plt.savefig('./graph/new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_action.png')
+    plt.savefig('./graph/real_new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_action.png')
 
     print('supply minus demand : {}'.format(supply_minus_demand))
     x = np.arange(len(supply_minus_demand))
@@ -588,4 +588,4 @@ if __name__ == "__main__":
     plt.title('Number of supply - Number of demand in every each time')
     plt.xlabel('time (1time = 30s)')
     plt.ylabel('count')
-    plt.savefig('./graph/new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
+    plt.savefig('./graph/real_new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
