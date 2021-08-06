@@ -23,6 +23,7 @@ second = 0
 supply_minus_demand = []
 section_dict = {}   # 숫자 : 행정구
 reverse_section_dict = {}
+ORR_list = []
 
 def find_section_number(section_string):
   for num, string in section_dict.items(): #mydict에 아이템을 하나씩 접근해서, key, value를 각각 name, age에 저장
@@ -198,6 +199,7 @@ class Gu:
         total_OD = total_PD = flag = 0
         newMatrix = []  # 몇 timestep뒤에 시뮬레이션에 추가될 택시
         percents = copy.deepcopy(self.percents)  # supply 비율 맞추기
+        ORR = 0
 
         if action < numsection:  # 해당 인덱스 0.1 추가 마지막에는 그냥 퍼센트 그대로
             percents = percents * 0.9
@@ -273,6 +275,8 @@ class Gu:
                 newMatrix.append(tmp)
             else:
                 break
+        if is_sim == False:
+            ORR += float(len(matched_demand)) / len(self.demand)
 
         ################# supply, demand가 남으면 나머지 matching
         if len(matched_supply) < len(self.supply) and len(unmatched_demand) > 0:
@@ -319,6 +323,10 @@ class Gu:
                     newMatrix.append(tmp)
                 else:
                     break
+            if is_sim == False:
+                ORR += float(len(matched_demand)) / len(self.demand)
+        if is_sim == False:
+            ORR_list.append(ORR)
 
         ##################################### matching 끝 #####################################
 
@@ -557,6 +565,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             self.hour += 1
         total_result_reward.append(reward)
         print('result reward {}'.format(reward))
+        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
 
 if __name__ == "__main__":
 
