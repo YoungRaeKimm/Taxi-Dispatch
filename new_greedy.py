@@ -192,7 +192,8 @@ class Gu:
                 newMatrix.append(tmp)
             else:
                 break
-        ORR += float(len(matched_demand)) / len(self.demand)
+        if is_sim == False:
+            ORR += float(len(matched_demand)) / len(self.demand)
 
         ################# supply, demand가 남으면 나머지 matching
         if len(matched_supply) < len(self.supply) and len(unmatched_demand) > 0:
@@ -236,9 +237,10 @@ class Gu:
                     newMatrix.append(tmp)
                 else:
                     break
-            ORR += float(len(matched_demand)) / len(self.demand)
-
-        ORR_list.append(ORR)
+            if is_sim == False:
+                ORR += float(len(matched_demand)) / len(self.demand)
+        if is_sim == False:
+            ORR_list.append(ORR)
 
         ##################################### matching 끝 #####################################
 
