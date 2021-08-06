@@ -372,7 +372,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
             tmp = []
             for j in range(self.numsection):
-                if i < 20:
+                if i < 15:
                     tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
                     # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
                     tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
