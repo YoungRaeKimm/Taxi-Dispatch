@@ -160,13 +160,13 @@ class Gu:
                 max_idx = np.argmax(matching_matrix)    # argmax는 flatten해서 하니까 아래 두줄에서 행과 열로 바꿔줌                    ########### matching ###########
                 tmp_pass_idx = int(max_idx / matching_matrix.shape[1])
                 tmp_dri_idx = max_idx % matching_matrix.shape[1]
-                if matched_supply_arr[reverse_section_dict[tmp_demand[tmp_pass_idx,1]]] == section_supply_len[reverse_section_dict[tmp_demand[tmp_pass_idx,1]]]:    #할당해야할 supply들 다 매칭되면 unmatching시킴
+                if matched_supply_arr[reverse_section_dict[tmp_demand[tmp_pass_idx,2]]] == section_supply_len[reverse_section_dict[tmp_demand[tmp_pass_idx,1]]]:    #할당해야할 supply들 다 매칭되면 unmatching시킴
                     unmatched_demand.append(tmp_demand[tmp_pass_idx])
                     matching_matrix[tmp_pass_idx,:] = 0
                     continue
                 matched_demand.append(tmp_pass_idx)
                 matched_supply.append(tmp_dri_idx)
-                matched_supply_arr[reverse_section_dict[tmp_demand[tmp_pass_idx,1]]] += 1
+                matched_supply_arr[reverse_section_dict[tmp_demand[tmp_pass_idx,2]]] += 1
                 matching_matrix[tmp_pass_idx, :] = 0
                 matching_matrix[:, tmp_dri_idx] = 0
                 total_OD += tmp_od[tmp_pass_idx]
