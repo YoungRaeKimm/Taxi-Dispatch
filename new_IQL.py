@@ -50,8 +50,6 @@ def get_od(demand):
 
     return np.array(haversine_vector(origin, dest))
 
-
-
 class Gu:
     def __init__(self, idx):
         global state_size
@@ -59,9 +57,12 @@ class Gu:
         self.idx = idx #gu의 list idx
         self.hour = 0
         self.demand = None        #demand 한번에 해서 하지 않고 구마다 저장.
+        self.demands = []
         self.supply = None
         self.PD_distance = None  # Passenger들과 Driver들 사이의 거리
         self.OD_distance = None
+        self.PD_distances = []  # Passenger들과 Driver들 사이의 거리
+        self.OD_distances = [] # OD도 list로 관리하는게 OD 구 단위로 matching 시킬때 편할듯
         self.percents = [] #원래 demand의 percent들
         self.priority = {} # dictionary 0:'강남구'
         self.demand_history = queue.Queue()   # queue
@@ -107,8 +108,19 @@ class Gu:
 
     def set_demand(self):  # percent 정리, priority 정리, OD, PD 정리
         global section_dict, numsection
+        self.demands = []
         self.percents = []
         demands_length = len(self.demand)  # demand 아예 없는 경우도 대비
+        for i in range(numsection):
+            if demands_length>0:
+                tmp_demand = self.demand[self.demand[:,1]==section_dict[i]]
+                if tmp_demand.size != 0:
+                    self.demands.append(tmp_demand)
+                else:
+                    self.demands.append(np.array([]))
+            else:
+                self.demands.append(np.array([]))
+
         for i in range(numsection):
             if demands_length != 0:
                 self.percents.append(len(self.demand[self.demand[:, 2] == section_dict[i]]) / demands_length)
@@ -118,6 +130,12 @@ class Gu:
 
         self.OD_distance = get_od(self.demand)
         self.PD_distance = get_pd(self.supply, self.demand)
+
+        self.OD_distances = []
+        self.PD_distances = []
+        for i in range(numsection):
+            self.OD_distances.append(get_od(self.demands[i]))
+            self.PD_distances.append(get_pd(self.supply, self.demands[i]))
 
     def build_model(self):
         model = Sequential()
