@@ -17,6 +17,7 @@ second = 0
 supply_minus_demand = []
 section_dict = {}   # 숫자 : 행정구
 reverse_section_dict = {}
+ORR_list = []
 
 def find_section_number(section_string):
   for num, string in section_dict.items(): #mydict에 아이템을 하나씩 접근해서, key, value를 각각 name, age에 저장
@@ -84,6 +85,7 @@ class Gu:
         matched_supply = [] # matching 된 supply index들
         newMatrix = []  # 몇 timestep뒤에 시뮬레이션에 추가될 택시
         matched_demand = []
+        ORR = 0
 
         if len(self.supply) != 0 and len(self.PD_distances) != 0:
 
@@ -131,6 +133,8 @@ class Gu:
                 else:
                     break
 
+            ORR += float(len(matched_demand)) / len(self.demand)
+            ORR_list.append(ORR)
 
             reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
 
@@ -324,6 +328,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 self.divide_supply(s, sim=False)
             self.hour += 1
         print('result reward {}'.format(reward))
+        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
 
 if __name__ == "__main__":
 
