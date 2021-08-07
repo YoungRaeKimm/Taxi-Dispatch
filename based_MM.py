@@ -262,9 +262,12 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             tmp_len = 0
             tmp = []
             for j in range(self.numsection):
-                tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
-                # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
-                tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                if i < 15:
+                    tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                    # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
+                    tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                else:
+                    tmp.append(np.reshape(np.array([]), (0, 4)))
             self.supply_hour.append(tmp)
 
         self.demand_hour = np.array(self.demand_hour,dtype=object)
@@ -306,6 +309,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         global supply_minus_demand
 
         reward = 0
+        total_supply = 0
+        total_demand = 0
         for i in tqdm.tqdm(range(self.episode_time)):
             now_supply = 0
             for j in range(numsection):
@@ -320,6 +325,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             for j in range(numsection):
                 self.gu_list[j].supply = self.supply_hour[self.hour][j]
                 self.gu_list[j].demand = self.demand_hour[self.hour][j]
+                total_supply += len(self.supply_hour[self.hour][j])
+                total_demand += len(self.demand_hour[self.hour][j])
                 self.gu_list[j].set_demand()
                 r, s = self.gu_list[j].matching(False)
                 tmplen += len(s)
@@ -327,6 +334,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 reward += r
                 self.divide_supply(s, sim=False)
             self.hour += 1
+        print('total s {} d {}'.format(total_supply,total_demand))
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
 
