@@ -475,9 +475,12 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             tmp_len = 0
             tmp = []
             for j in range(self.numsection):
-                tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
-                # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
-                tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                if i < 15:
+                    tmp.append(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                    # print('supply {} time {}idx {}'.format(len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]]), i, j))
+                    tmp_len += len(tmp_supply[tmp_supply[:, 1] == self.section_dict[j]])
+                else:
+                    tmp.append(np.reshape(np.array([]),(0,4)))
             self.supply_hour.append(tmp)
             # print('total len {} time {}'.format(tmp_len, i))
 
