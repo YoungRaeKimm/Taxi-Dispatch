@@ -70,7 +70,6 @@ class Gu:
         self.demand_history = queue.Queue()   # queue
 
         self.line_fitter = LinearRegression()
-        self.optimizer = self.optimizer()
 
         self.load_model = False
         # 에이전트가 가능한 모든 행동 정의
@@ -102,6 +101,8 @@ class Gu:
         else:
             self.model = self.build_model()
             self.target_model = self.build_model()
+
+        self.optimizer = self.optimizer()
 
         # 타킷 모델 초기화
         self.update_target_model()
