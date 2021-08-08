@@ -140,6 +140,18 @@ class Gu:
             self.OD_distances.append(get_od(self.demands[i]))
             self.PD_distances.append(get_pd(self.supply, self.demands[i]))
 
+    def build_model(self):
+        model = Sequential()
+        model.add(Dense(256, input_dim=self.state_size, activation='relu',
+                        kernel_initializer='he_uniform'))
+        # model.add(BatchNormalization())
+        model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
+        # model.add(BatchNormalization())
+        model.add(Dense(self.action_size, activation='linear', kernel_initializer='he_uniform'))
+        model.summary()
+        # model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+        return model
+
     def optimizer(self):
         a = K.placeholder(shape=(None,), dtype='int32')
         y = K.placeholder(shape=(None,), dtype='float32')
@@ -172,18 +184,6 @@ class Gu:
         train = K.function([self.model.input, a, y], [loss], updates=updates)
 
         return train
-
-    def build_model(self):
-        model = Sequential()
-        model.add(Dense(256, input_dim=self.state_size, activation='relu',
-                        kernel_initializer='he_uniform'))
-        # model.add(BatchNormalization())
-        model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
-        # model.add(BatchNormalization())
-        model.add(Dense(self.action_size, activation='linear', kernel_initializer='he_uniform'))
-        model.summary()
-        # model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
-        return model
 
     def update_target_model(self):
         self.target_model.set_weights(self.model.get_weights())
