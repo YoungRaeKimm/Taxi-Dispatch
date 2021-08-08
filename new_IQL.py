@@ -610,7 +610,7 @@ if __name__ == "__main__":
     plt.title('Number of supply - Number of demand in every each time')
     plt.xlabel('time (1time = 30s)')
     plt.ylabel('count')
-    plt.savefig('./graph/new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
+    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
 
     x = np.arange(len(total_result_reward))
     plt.figure(2)
@@ -618,5 +618,5 @@ if __name__ == "__main__":
     plt.title('score per episode')
     plt.xlabel('episode')
     plt.ylabel('score')
-    plt.savefig('./graph/new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
+    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
 
