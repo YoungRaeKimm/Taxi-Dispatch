@@ -223,9 +223,10 @@ class Gu:
             percents = percents * 0.9
             percents[action] += 0.1
 
-        if len(self.supply) == 0:
+        if len(self.supply) == 0 or len(self.demand) == 0:
             tmp_supply = copy.deepcopy(self.supply)
-            tmp_supply[:, 0] = str(int(tmp_supply[0, 0]) + 1)
+            if len(self.supply) > 0:
+                tmp_supply[:, 0] = str(int(tmp_supply[0, 0]) + 1)
             return 0, tmp_supply
 
         ##################################### matching 시작 #####################################
