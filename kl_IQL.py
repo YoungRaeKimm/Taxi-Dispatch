@@ -10,7 +10,6 @@ from sklearn.linear_model import LinearRegression
 from tensorflow.keras.losses import KLDivergence
 from tensorflow.keras.layers import Dense, BatchNormalization
 from tensorflow.keras.optimizers import Adam
-from keras import backend as K
 from tensorflow.keras.models import Sequential, load_model, save_model
 import random
 import matplotlib.pyplot as plt
@@ -102,8 +101,6 @@ class Gu:
             self.model = self.build_model()
             self.target_model = self.build_model()
 
-        self.optimizer = self.optimizer()
-
         # 타킷 모델 초기화
         self.update_target_model()
 
@@ -150,41 +147,8 @@ class Gu:
         # model.add(BatchNormalization())
         model.add(Dense(self.action_size, activation='linear', kernel_initializer='he_uniform'))
         model.summary()
-        # model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         return model
-
-    def optimizer(self):
-        a = K.placeholder(shape=(None,), dtype='int32')
-        y = K.placeholder(shape=(None,), dtype='float32')
-
-        prediction = self.model.output
-        kl = KLDivergence()
-
-        a_one_hot = K.one_hot(a, self.action_size)
-        q_value = K.sum(prediction * a_one_hot, axis=1)
-        error = K.abs(y - q_value)
-
-        quadratic_part = error
-
-        D_o, D_v = [], []
-        for i in range(numsection):
-            D_o.append(self.model.input[i])
-            if a != numsection:
-                if i == a:
-                    D_v.append(self.model.input[i + numsection] * 0.9 + 0.1)
-                else:
-                    D_v.append(self.model.input[i + numsection] * 0.9)
-            else:
-                D_v.append(self.model.input[i + numsection])
-        linear_part = kl(D_o, D_v).numpy()
-
-        loss = K.mean(K.square(quadratic_part) + linear_part)
-
-        optimizer = Adam(lr=self.learning_rate)
-        updates = optimizer.get_updates(self.model.trainable_weights, [], loss)
-        train = K.function([self.model.input, a, y], [loss], updates=updates)
-
-        return train
 
     def update_target_model(self):
         self.target_model.set_weights(self.model.get_weights())
@@ -244,8 +208,8 @@ class Gu:
                     np.amax(target_val[i]))
 
         loss = self.optimizer([states, actions, target])
-        # self.model.fit(states, target, batch_size=self.batch_size,
-        #                epochs=1, verbose=0)
+        self.model.fit(states, target, batch_size=self.batch_size,
+                       epochs=1, verbose=0)
 
     def matching(self, action, is_sim=True):  # reward, new supply return
 
