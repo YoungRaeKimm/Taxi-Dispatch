@@ -207,7 +207,6 @@ class Gu:
                 target[i][actions[i]] = rewards[i] + self.discount_factor * (
                     np.amax(target_val[i]))
 
-        loss = self.optimizer([states, actions, target])
         self.model.fit(states, target, batch_size=self.batch_size,
                        epochs=1, verbose=0)
 
@@ -567,10 +566,10 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             tmplen = 0
             for j in range(numsection):
                 tmplen += len(self.demand_hour[self.hour, j])
-                if new_state[j,0,j] > new_state[j,0,j+numsection]:  #demand의 비율의 크기가 supply보다 크다면
-                    distrib += new_state[j, 0, j + numsection] / new_state[j, 0, j]
+                if new_state[j][0][j] > new_state[j][0][j+numsection]:  #demand의 비율의 크기가 supply보다 크다면
+                    distrib += new_state[j][0][j + numsection] / new_state[j][0][j]
                 else:
-                    distrib += new_state[j, 0, j] / new_state[j, 0, j + numsection]
+                    distrib += new_state[j][0][j] / new_state[j][0][j+numsection]
             supply_minus_demand.append(now_supply-tmplen)
 
             tmplen = 0
