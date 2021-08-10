@@ -583,11 +583,13 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
         reward = 0
         old_state=[]
-        best_actions = []
+        old_actions = []
         for i in range(self.episode_time):
             # old_state=[]
             new_state = []
+            best_actions = []
             now_supply = 0
+            distrib = 0.
             for j in range(numsection):
                 self.gu_list[j].supply = self.supply_hour[self.hour][j]
                 self.gu_list[j].demand = self.demand_hour[self.hour][j]
@@ -601,6 +603,10 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             tmplen = 0
             for j in range(numsection):
                 tmplen += len(self.demand_hour[self.hour, j])
+                if new_state[j,0,j] > new_state[j,0,j+numsection]:  #demand의 비율의 크기가 supply보다 크다면
+                    distrib += new_state[j, 0, j + numsection] / new_state[j, 0, j]
+                else:
+                    distrib += new_state[j, 0, j] / new_state[j, 0, j + numsection]
             supply_minus_demand.append(now_supply-tmplen)
 
             tmplen = 0
@@ -613,14 +619,16 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 self.divide_supply(s, sim=False)
                 if i > 0:
                     if i == self.episode_time - 1:
-                        self.gu_list[j].append_sample(old_state[j], best_actions[j], r, new_state[j], True)
+                        self.gu_list[j].append_sample(old_state[j], old_actions[j], r * distrib, new_state[j], True)
                         self.gu_list[j].update_target_model()
                     else:
-                        self.gu_list[j].append_sample(old_state[j], best_actions[j], r, new_state[j], False)
+                        self.gu_list[j].append_sample(old_state[j], old_actions[j], r * distrib, new_state[j], False)
+
                 if len(self.gu_list[j].memory) >= self.gu_list[j].train_start:
                     self.gu_list[j].train_model()
 
             old_state = copy.deepcopy(new_state)
+            old_actions = copy.deepcopy(best_actions)
             self.hour += 1
         total_result_reward.append(reward)
         print('result reward {}'.format(reward))
