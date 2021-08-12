@@ -224,9 +224,10 @@ class Gu:
             percents = percents * 0.9
             percents[action] += 0.1
 
-        if len(self.supply) == 0:
+        if len(self.supply) == 0 or len(self.demand) == 0:
             tmp_supply = copy.deepcopy(self.supply)
-            tmp_supply[:, 0] = str(int(tmp_supply[0, 0]) + 1)
+            if len(self.supply) > 0:
+                tmp_supply[:, 0] = str(int(tmp_supply[0, 0]) + 1)
             return 0, tmp_supply
 
         ##################################### matching 시작 #####################################
@@ -619,7 +620,7 @@ if __name__ == "__main__":
     plt.title('Number of supply - Number of demand in every each time')
     plt.xlabel('time (1time = 30s)')
     plt.ylabel('count')
-    plt.savefig('./graph/new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
+    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
 
     x = np.arange(len(total_result_reward))
     plt.figure(2)
@@ -627,5 +628,5 @@ if __name__ == "__main__":
     plt.title('score per episode')
     plt.xlabel('episode')
     plt.ylabel('score')
-    plt.savefig('./graph/new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
+    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
 
