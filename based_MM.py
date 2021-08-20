@@ -18,6 +18,8 @@ supply_minus_demand = []
 section_dict = {}   # 숫자 : 행정구
 reverse_section_dict = {}
 ORR_list = []
+sum_OD = 0.
+num_matched = 0
 
 def find_section_number(section_string):
   for num, string in section_dict.items(): #mydict에 아이템을 하나씩 접근해서, key, value를 각각 name, age에 저장
@@ -78,7 +80,7 @@ class Gu:
 
     def matching(self, is_sim = True): # reward, new supply return
 
-        global section_dict, numsection
+        global section_dict, numsection, sum_OD, num_matched
         if is_sim == False:
             self.demand_history.put(len(self.demand))
         total_OD = total_PD = flag = 0
@@ -136,6 +138,8 @@ class Gu:
             ORR += float(len(matched_demand)) / len(self.demand)
             ORR_list.append(ORR)
 
+            sum_OD += total_PD
+            num_matched += len(matched_demand)
             reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
 
         # print('낭은 supply {} 남은 demand {}'.format(len(self.supply)-len(matched_supply), len(self.demand)-len(matched_demand)))
@@ -337,6 +341,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         print('total s {} d {}'.format(total_supply,total_demand))
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
+        print('mean OD {}'.format(sum_OD / float(num_matched)))
 
 if __name__ == "__main__":
 
