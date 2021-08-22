@@ -570,11 +570,12 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
             tmplen = 0
             for j in range(numsection):
-                tmplen += len(self.demand_hour[self.hour, j])
-                if new_state[j][0][j] > new_state[j][0][j+numsection]:  #demand의 비율의 크기가 supply보다 크다면
-                    distrib += new_state[j][0][j + numsection] / new_state[j][0][j]
-                else:
-                    distrib += new_state[j][0][j] / new_state[j][0][j+numsection]
+                # tmplen += len(self.demand_hour[self.hour, j])
+                # if new_state[j][0][j] > new_state[j][0][j+numsection]:  #demand의 비율의 크기가 supply보다 크다면
+                distrib += abs(new_state[j][0][j + numsection] - new_state[j][0][j])
+                # else:
+                #     distrib += new_state[j][0][j] / new_state[j][0][j+numsection]
+            distrib = (numsection - distrib) / numsection   # maximum 값이 numsection인데, 비슷하면 비슷할 수록 1, 최대로 많이 틀리면 0으로.
             supply_minus_demand.append(now_supply-tmplen)
 
             tmplen = 0
