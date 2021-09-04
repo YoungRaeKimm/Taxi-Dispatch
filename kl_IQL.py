@@ -17,7 +17,8 @@ import warnings
 warnings.filterwarnings(action='ignore')
 
 gu_list = []
-total_result_reward = []
+mean_profit = 0.
+mean_revenue = 0.
 state_size=0
 numsection = 0
 second = 0
@@ -214,7 +215,7 @@ class Gu:
 
     def matching(self, action, is_sim=True):  # reward, new supply return
 
-        global section_dict, numsection, sum_OD, num_matched
+        global section_dict, numsection, sum_OD, num_matched, mean_revenue
         if is_sim == False:
             self.demand_history.put(len(self.demand))
         total_OD = total_PD = flag = 0
@@ -355,6 +356,8 @@ class Gu:
         ##################################### matching 끝 #####################################
 
         reward = abs((total_OD - total_PD) / 0.132 * 100)  # 132m당 100원
+        if mean_revenue != 0:
+            mean_revenue = mean_revenue / (num_matched) * (num_matched - len(matched_demand)) + ((total_OD / 0.132 * 100) / num_matched)
 
         if len(self.supply) == 0:
             return 0, np.array([])
@@ -547,7 +550,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         return state
 
     def step(self):  # gu의 is_sim false로 하고 matching 시키는 함수
-        global supply_minus_demand, total_result_reward
+        global supply_minus_demand, mean_profit
 
         reward = 0
         old_state=[]
@@ -599,7 +602,15 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             old_state = copy.deepcopy(new_state)
             old_actions = copy.deepcopy(best_actions)
             self.hour += 1
-        total_result_reward.append(reward)
+
+            if i == 0:
+                mean_profit = reward
+            else:
+                mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
+            print('mean profit {}'.format(mean_profit))
+            print('mean revenue {}'.format(mean_revenue))
+
+        # total_result_reward.append(reward)
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
         print('mean OD {}'.format(sum_OD / float(num_matched)))
@@ -628,11 +639,11 @@ if __name__ == "__main__":
     plt.ylabel('count')
     plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
 
-    x = np.arange(len(total_result_reward))
-    plt.figure(2)
-    plt.plot(x, total_result_reward)
-    plt.title('score per episode')
-    plt.xlabel('episode')
-    plt.ylabel('score')
-    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
+    # x = np.arange(len(total_result_reward))
+    # plt.figure(2)
+    # plt.plot(x, total_result_reward)
+    # plt.title('score per episode')
+    # plt.xlabel('episode')
+    # plt.ylabel('score')
+    # plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
 

@@ -12,6 +12,8 @@ warnings.filterwarnings(action='ignore')
 
 
 simulation_level = 3
+mean_profit = 0.
+mean_revenue = 0.
 numsection = 0
 second = 0
 supply_minus_demand = []
@@ -80,7 +82,7 @@ class Gu:
 
     def matching(self, is_sim = True): # reward, new supply return
 
-        global section_dict, numsection, sum_OD, num_matched
+        global section_dict, numsection, sum_OD, num_matched, mean_revenue
         if is_sim == False:
             self.demand_history.put(len(self.demand))
         total_OD = total_PD = flag = 0
@@ -141,6 +143,9 @@ class Gu:
             sum_OD += total_PD
             num_matched += len(matched_demand)
             reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
+            if mean_revenue != 0:
+                mean_revenue = mean_revenue / (num_matched) * (num_matched - len(matched_demand)) + ((total_OD / 0.132 * 100) / num_matched)
+
 
         # print('낭은 supply {} 남은 demand {}'.format(len(self.supply)-len(matched_supply), len(self.demand)-len(matched_demand)))
 
@@ -310,7 +315,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
 
     def step(self):  # gu의 is_sim false로 하고 matching 시키는 함수
-        global supply_minus_demand
+        global supply_minus_demand, mean_profit
 
         reward = 0
         total_supply = 0
@@ -338,6 +343,16 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 reward += r
                 self.divide_supply(s, sim=False)
             self.hour += 1
+
+
+            if i == 0:
+                mean_profit = reward
+            else:
+                mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
+            print('mean profit {}'.format(mean_profit))
+            print('mean revenue {}'.format(mean_revenue))
+
+
         print('total s {} d {}'.format(total_supply,total_demand))
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
