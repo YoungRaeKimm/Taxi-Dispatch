@@ -23,6 +23,7 @@ reverse_section_dict = {}
 select_action = [0,0,0]
 ORR_list = []
 sum_OD = 0.
+sum_PD = 0.
 num_matched = 0
 
 def find_section_number(section_string):
@@ -114,7 +115,7 @@ class Gu:
 
     def matching(self, action, is_sim = True): # reward, new supply return
 
-        global section_dict, numsection, sum_OD, num_matched, mean_revenue
+        global section_dict, numsection, sum_OD, num_matched, mean_revenue, sum_PD
         if is_sim == False:
             self.demand_history.put(len(self.demand))
         total_OD = total_PD = flag = 0
@@ -247,6 +248,7 @@ class Gu:
             ORR_list.append(ORR)
 
         sum_OD += total_OD
+        sum_PD += total_PD
         num_matched += len(matched_demand)
         ##################################### matching 끝 #####################################
 
@@ -545,7 +547,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 return top3_actions
 
     def step(self):  # simulation 돌리고 gu의 is_sim false로 하고 matching 시키는 함수
-        global supply_minus_demand, mean_profit, mean_revenue, num_matched
+        global supply_minus_demand, mean_profit, mean_revenue, num_matched, sum_OD, sum_PD
 
         reward = 0
         for i in tqdm.tqdm(range(self.episode_time)):
@@ -579,9 +581,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
                 self.divide_supply(s, sim=False)
             self.hour += 1
 
-
-        print('mean profit {}'.format(mean_profit))
-        print('mean revenue {}'.format(mean_revenue * num_matched))
+        print('mean profit {}'.format(reward))
+        print('mean revenue {}'.format(sum_OD/ 0.132 * 100))
 
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))

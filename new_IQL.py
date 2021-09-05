@@ -27,6 +27,7 @@ section_dict = {}   # 숫자 : 행정구
 reverse_section_dict = {}
 ORR_list = []
 sum_OD = 0.
+sum_PD = 0.
 num_matched = 0
 
 def find_section_number(section_string):
@@ -215,7 +216,7 @@ class Gu:
 
     def matching(self, action, is_sim=True):  # reward, new supply return
 
-        global section_dict, numsection, sum_OD, num_matched, mean_revenue
+        global section_dict, numsection, sum_OD, num_matched, mean_revenue, sum_PD
         if is_sim == False:
             self.demand_history.put(len(self.demand))
         total_OD = total_PD = flag = 0
@@ -352,6 +353,7 @@ class Gu:
             ORR_list.append(ORR)
 
         sum_OD += total_OD
+        sum_PD += total_PD
         num_matched += len(matched_demand)
         ##################################### matching 끝 #####################################
 
@@ -550,7 +552,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         return state
 
     def step(self):  # gu의 is_sim false로 하고 matching 시키는 함수
-        global supply_minus_demand, mean_profit, mean_revenue, num_matched, before_revenue
+        global supply_minus_demand, mean_profit, mean_revenue, num_matched, before_revenue, sum_PD, sum_OD
 
         reward = 0
         old_state=[]
@@ -599,6 +601,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
             if i == 0:
                 mean_profit = reward
+                mean_revenue = sum_OD / 0.132 * 100
                 before_revenue = mean_revenue
             else:
                 mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
@@ -608,6 +611,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
             num_matched = 0
             mean_revenue = 0.
+            sum_PD = 0.
+            sum_OD = 0.
 
         # total_result_reward.append(reward)
         print('result reward {}'.format(reward))
