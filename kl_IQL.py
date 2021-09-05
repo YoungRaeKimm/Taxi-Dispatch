@@ -19,6 +19,7 @@ warnings.filterwarnings(action='ignore')
 gu_list = []
 mean_profit = 0.
 mean_revenue = 0.
+before_revenue = 0.
 state_size=0
 numsection = 0
 second = 0
@@ -356,8 +357,8 @@ class Gu:
         ##################################### matching 끝 #####################################
 
         reward = abs((total_OD - total_PD) / 0.132 * 100)  # 132m당 100원
-        if mean_revenue != 0:
-            mean_revenue = mean_revenue / (num_matched) * (num_matched - len(matched_demand)) + ((total_OD / 0.132 * 100) / num_matched)
+
+        mean_revenue += total_OD / 0.132 * 100
 
         if len(self.supply) == 0:
             return 0, np.array([])
@@ -550,7 +551,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         return state
 
     def step(self):  # gu의 is_sim false로 하고 matching 시키는 함수
-        global supply_minus_demand, mean_profit
+        global supply_minus_demand, mean_profit, mean_revenue, num_matched, before_revenue
 
         reward = 0
         old_state=[]
@@ -605,10 +606,15 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
             if i == 0:
                 mean_profit = reward
+                before_revenue = mean_revenue
             else:
                 mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
+                before_revenue = (before_revenue / (i+1) * (i)) + (mean_revenue / (i+1))
             print('mean profit {}'.format(mean_profit))
             print('mean revenue {}'.format(mean_revenue))
+
+            num_matched = 0
+            mean_revenue = 0.
 
         # total_result_reward.append(reward)
         print('result reward {}'.format(reward))
