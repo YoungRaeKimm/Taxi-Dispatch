@@ -606,13 +606,15 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             else:
                 mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
                 before_revenue = (before_revenue / (i+1) * (i)) + (mean_revenue / (i+1))
-            print('mean profit {}'.format(mean_profit))
-            print('mean revenue {}'.format(before_revenue))
 
-            num_matched = 0
-            mean_revenue = 0.
-            sum_PD = 0.
-            sum_OD = 0.
+        print('mean profit {}'.format(mean_profit))
+        print('mean revenue {}'.format(before_revenue))
+
+        num_matched = 0
+        mean_profit = 0.
+        mean_revenue = 0.
+        sum_PD = 0.
+        sum_OD = 0.
 
         # total_result_reward.append(reward)
         print('result reward {}'.format(reward))
