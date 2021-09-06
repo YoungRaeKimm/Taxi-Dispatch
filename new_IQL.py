@@ -609,17 +609,16 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
         print('mean profit {}'.format(mean_profit))
         print('mean revenue {}'.format(before_revenue))
+        # total_result_reward.append(reward)
+        print('result reward {}'.format(reward))
+        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
+        print('mean OD {}'.format(sum_OD / float(num_matched)))
 
         num_matched = 0
         mean_profit = 0.
         mean_revenue = 0.
         sum_PD = 0.
         sum_OD = 0.
-
-        # total_result_reward.append(reward)
-        print('result reward {}'.format(reward))
-        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
-        print('mean OD {}'.format(sum_OD / float(num_matched)))
 
 if __name__ == "__main__":
 
