@@ -246,10 +246,10 @@ class Gu:
                 ORR += float(len(matched_demand)) / len(self.demand)
         if is_sim == False:
             ORR_list.append(ORR)
+            sum_OD += total_OD
+            sum_PD += total_PD
+            num_matched += len(matched_demand)
 
-        sum_OD += total_OD
-        sum_PD += total_PD
-        num_matched += len(matched_demand)
         ##################################### matching 끝 #####################################
 
         reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
@@ -583,6 +583,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
         print('mean profit {}'.format(reward))
         print('mean revenue {}'.format(sum_OD/ 0.132 * 100))
+        print('sum OD {}'.format(sum_OD))
+        print('sum PD {}'.format(sum_PD))
 
         print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
