@@ -615,7 +615,6 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         print('mean OD {}'.format(sum_OD / float(num_matched)))
 
         num_matched = 0
-        mean_profit = 0.
         mean_revenue = 0.
         sum_PD = 0.
         sum_OD = 0.
