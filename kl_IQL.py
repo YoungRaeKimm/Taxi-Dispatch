@@ -606,11 +606,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             old_actions = copy.deepcopy(best_actions)
             self.hour += 1
 
-
-        num_matched = 0
-        mean_revenue = 0.
-        sum_PD = 0.
-        sum_OD = 0.
+        return reward
 
 if __name__ == "__main__":
 
@@ -623,8 +619,9 @@ if __name__ == "__main__":
     for i in range(numsection):
         gu_list.append(Gu(i))
     env.gu_list = gu_list
+
     for i in tqdm.tqdm(range(episode)):
-        env.step()
+        reward = env.step()
 
         if i == 0:
             mean_profit = reward
