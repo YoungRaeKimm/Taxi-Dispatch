@@ -302,6 +302,7 @@ class Gu:
                 break
         if is_sim == False:
             ORR += float(len(matched_demand)) / len(self.demand)
+        num_matched += len(matched_demand)
 
         ################# supply, demand가 남으면 나머지 matching
         if len(matched_supply) < len(self.supply) and len(unmatched_demand) > 0:
