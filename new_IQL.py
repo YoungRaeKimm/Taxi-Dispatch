@@ -626,7 +626,7 @@ if __name__ == "__main__":
         print('mean profit {}'.format(mean_profit))
         print('mean revenue {}'.format(before_revenue))
         # total_result_reward.append(reward)
-        print('result reward {}'.format(reward))
+        # print('result reward {}'.format(reward))
         print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
         print('mean OD {}'.format(sum_OD / float(num_matched)))
 
