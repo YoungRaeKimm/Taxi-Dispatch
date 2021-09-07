@@ -599,25 +599,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
             old_actions = copy.deepcopy(best_actions)
             self.hour += 1
 
-            if i == 0:
-                mean_profit = reward
-                mean_revenue = sum_OD / 0.132 * 100
-                before_revenue = mean_revenue
-            else:
-                mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
-                before_revenue = (before_revenue / (i+1) * (i)) + (mean_revenue / (i+1))
 
-        print('mean profit {}'.format(mean_profit))
-        print('mean revenue {}'.format(before_revenue))
-        # total_result_reward.append(reward)
-        print('result reward {}'.format(reward))
-        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
-        print('mean OD {}'.format(sum_OD / float(num_matched)))
-
-        num_matched = 0
-        mean_revenue = 0.
-        sum_PD = 0.
-        sum_OD = 0.
 
 if __name__ == "__main__":
 
@@ -632,6 +614,26 @@ if __name__ == "__main__":
     env.gu_list = gu_list
     for i in tqdm.tqdm(range(episode)):
         env.step()
+
+        if i == 0:
+            mean_profit = reward
+            mean_revenue = sum_OD / 0.132 * 100
+            before_revenue = mean_revenue
+        else:
+            mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
+            before_revenue = (before_revenue / (i+1) * (i)) + (mean_revenue / (i+1))
+
+        print('mean profit {}'.format(mean_profit))
+        print('mean revenue {}'.format(before_revenue))
+        # total_result_reward.append(reward)
+        print('result reward {}'.format(reward))
+        print('mean ORR {}'.format(sum(ORR_list) / float(len(ORR_list))))
+        print('mean OD {}'.format(sum_OD / float(num_matched)))
+
+        num_matched = 0
+        mean_revenue = 0.
+        sum_PD = 0.
+        sum_OD = 0.
         env = Platform(case)
         env.gu_list = gu_list
 
