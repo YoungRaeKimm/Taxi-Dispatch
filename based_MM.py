@@ -140,7 +140,7 @@ class Gu:
             ORR += float(len(matched_demand)) / len(self.demand)
             ORR_list.append(ORR)
 
-            sum_OD += total_PD
+            sum_OD += total_OD
             num_matched += len(matched_demand)
             reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
 
