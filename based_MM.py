@@ -346,7 +346,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
 
 
         print('mean profit {}'.format(reward))
-        print('mean revenue {}'.format(mean_revenue * num_matched))
+        print('mean revenue {}'.format(sum_OD/ 0.132 * 100))
 
         print('total s {} d {}'.format(total_supply,total_demand))
         print('result reward {}'.format(reward))
