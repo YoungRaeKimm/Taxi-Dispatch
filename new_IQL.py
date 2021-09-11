@@ -609,6 +609,7 @@ if __name__ == "__main__":
 
     case = int(input('case : '))
     episode = 50
+    revenue_record, profit_record = [], []
 
     env = Platform(case)
     for i in range(numsection):
@@ -625,6 +626,9 @@ if __name__ == "__main__":
         else:
             mean_profit = (mean_profit / (i+1) * (i)) + (reward / (i+1))
             before_revenue = (before_revenue / (i+1) * (i)) + (mean_revenue / (i+1))
+
+        revenue_record.append(sum_OD / 0.132 * 100)
+        profit_record.append(reward)
 
         print('mean profit {}'.format(mean_profit))
         print('mean revenue {}'.format(before_revenue))
@@ -648,11 +652,19 @@ if __name__ == "__main__":
     plt.ylabel('count')
     plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
 
-    # x = np.arange(len(total_result_reward))
-    # plt.figure(2)
-    # plt.plot(x, total_result_reward)
-    # plt.title('score per episode')
-    # plt.xlabel('episode')
-    # plt.ylabel('score')
-    # plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_score.png')
+    x = np.arange(len(revenue_record))
+    plt.figure(2)
+    plt.plot(x, revenue_record, 'k')
+    plt.title('Revenue per Episode')
+    plt.xlabel('Episode')
+    plt.ylabel('Revenue (₩)')
+    plt.savefig('./graph/real_new_graph/matching_IQL_' + str(numsection) + 'section_' + 'revenue.png')
+
+    x = np.arange(len(profit_record))
+    plt.figure(3)
+    plt.plot(x, revenue_record, 'k')
+    plt.title('Profit per Episode')
+    plt.xlabel('Episode')
+    plt.ylabel('Profit (₩)')
+    plt.savefig('./graph/real_new_graph/matching_IQL_' + str(numsection) + 'section_' + 'profit.png')
 
