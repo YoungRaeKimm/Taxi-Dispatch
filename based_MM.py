@@ -171,7 +171,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         self.numsection = 0
         self.second = 0
         self.case = case
-        self.episode_time = 720  # 3 hours 진짜 실험시 6시간
+        self.episode_time = 2880  # 3 hours 진짜 실험시 6시간
         if case == 0:  # full greedy
             self.numsection = 25
             self.second = 10

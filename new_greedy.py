@@ -294,7 +294,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         self.numsection = 0
         self.second = 0
         self.case = case
-        self.episode_time = 720  # 6시간
+        self.episode_time = 2880  # 6시간
 
         if case == 1:
             self.numsection = 25
