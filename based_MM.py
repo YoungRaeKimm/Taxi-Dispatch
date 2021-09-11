@@ -306,10 +306,10 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
     def load_data(self):
         print('Loading Data')
         self.demand = pkl.load(
-            open('demand_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test.pkl',
+            open('demand_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second.pkl',
                  'rb'))  # 수요
         self.supply = pkl.load(
-            open('supply_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test_18000.pkl',
+            open('supply_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test_30000.pkl',
                  'rb'))  # 공급
 
 

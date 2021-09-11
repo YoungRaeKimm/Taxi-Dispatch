@@ -529,10 +529,10 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         print('Loading Data')
         #########################################수정해야함##########################################
         self.demand = pkl.load(
-            open('demand_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test.pkl',
+            open('demand_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second.pkl',
                  'rb'))  # 수요
         self.supply = pkl.load(
-            open('supply_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test_18000.pkl',
+            open('supply_final_' + str(self.numsection) + 'section_' + str(self.second) + 'second_test_30000.pkl',
                  'rb'))  # 공급
 
     def get_state(self):    #DQN 돌리기 위해서 state 만들어주기 (list 형태로 반환)
