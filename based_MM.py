@@ -142,7 +142,7 @@ class Gu:
 
             sum_OD += total_OD
             num_matched += len(matched_demand)
-            reward = abs((total_OD - total_PD) / 0.132 * 100)     # 132m당 100원
+            reward = abs((total_OD - total_PD) / 0.132 * 100) - 303 * (len(self.supply) - len(matched_supply))    # 132m당 100원
 
             mean_revenue += total_OD / 0.132 * 100
 
