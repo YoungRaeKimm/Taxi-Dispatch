@@ -661,17 +661,16 @@ if __name__ == "__main__":
 
     x = np.arange(len(revenue_record))
     plt.figure(2)
-    plt.plot(x, revenue_record)
-    plt.title('Revenue per Episode', 'k')
+    plt.plot(x, revenue_record, 'k')
+    plt.title('Revenue per Episode')
     plt.xlabel('Episode')
     plt.ylabel('Revenue (₩)')
     plt.savefig('./graph/real_new_graph/matching_DDR_' + str(numsection) + 'section_' + 'revenue.png')
 
-
     x = np.arange(len(profit_record))
     plt.figure(3)
-    plt.plot(x, revenue_record)
-    plt.title('Profit per Episode', 'k')
+    plt.plot(x, revenue_record, 'k')
+    plt.title('Profit per Episode')
     plt.xlabel('Episode')
     plt.ylabel('Profit (₩)')
     plt.savefig('./graph/real_new_graph/matching_DDR_' + str(numsection) + 'section_' + 'profit.png')
