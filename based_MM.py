@@ -17,14 +17,14 @@ mean_revenue = 0.
 numsection = 0
 second = 0
 supply_minus_demand = []
-section_dict = {}   # 숫자 : 행정구
+section_dict = {}   # number : zone_number
 reverse_section_dict = {}
 ORR_list = []
 sum_OD = 0.
 num_matched = 0
 
 def find_section_number(section_string):
-  for num, string in section_dict.items(): #mydict에 아이템을 하나씩 접근해서, key, value를 각각 name, age에 저장
+  for num, string in section_dict.items():
     if section_string == string:
         return num
 
@@ -172,10 +172,8 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         self.second = 0
         self.case = case
         self.episode_time = 2880  # 3 hours 진짜 실험시 6시간
-        if case == 0:  # full greedy
-            self.numsection = 25
-            self.second = 10
-        elif case == 1:
+
+        if case == 1:
             self.numsection = 25
             self.second = 30
         elif case == 2:
@@ -357,17 +355,8 @@ if __name__ == "__main__":
 
     plt.style.use('seaborn-whitegrid')
 
-    case = int(input('case : '))
+    case = int(input('case 1 -> 25 zones, 2 -> 8 zones, 3 -> 4 zones, 4 -> 2 zones, 5 -> 1 zone(Z-CMM) \ncase : '))
     # case = 1
     env = Platform(case)
 
     env.step()
-
-    print('supply minus demand : {}'.format(supply_minus_demand))
-    x = np.arange(len(supply_minus_demand))
-    plt.figure(1)
-    plt.plot(x,supply_minus_demand)
-    plt.title('Number of supply - Number of demand in every each time')
-    plt.xlabel('time (1time = 30s)')
-    plt.ylabel('count')
-    plt.savefig('./graph/matching_distance_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')

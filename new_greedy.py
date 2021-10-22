@@ -595,25 +595,16 @@ if __name__ == "__main__":
 
     plt.style.use('seaborn-whitegrid')
 
-    case = int(input('case : '))
+    case = int(input('case 1 -> 25 zones, 2 -> 8 zones, 3 -> 4 zones, 4 -> 2 zones, 5 -> 1 zone(Z-CMM) \ncase : '))
     # case = 1
     env = Platform(case)
 
     env.step()
 
-    x = ['1', '2', '3']
-    plt.figure(1)
-    plt.bar(x, select_action)
-    plt.title('Best action count in first simulation')
-    plt.xlabel('action index')
-    plt.ylabel('count')
-    plt.savefig('./graph/real_new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_action.png')
-
-    print('supply minus demand : {}'.format(supply_minus_demand))
-    x = np.arange(len(supply_minus_demand))
-    plt.figure(2)
-    plt.plot(x,supply_minus_demand)
-    plt.title('Number of supply - Number of demand in every each time')
-    plt.xlabel('time (1time = 30s)')
-    plt.ylabel('count')
-    plt.savefig('./graph/real_new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
+    # x = ['1', '2', '3']
+    # plt.figure(1)
+    # plt.bar(x, select_action)
+    # plt.title('Best action count in first simulation')
+    # plt.xlabel('action index')
+    # plt.ylabel('count')
+    # plt.savefig('./graph/real_new_graph/matching_greedy_' + str(numsection) + 'section_' + str(second) + 'second_action.png')

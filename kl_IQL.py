@@ -387,10 +387,7 @@ class Platform:  # 역할: OD별, PD별로 demand, supply 정리해서 gu에 넘
         self.case = case
         self.episode_time = 2880  # 3 hours 진짜 실험시 6시간
 
-        if case == 0:  # full greedy
-            self.numsection = 25
-            self.second = 10
-        elif case == 1:
+        if case == 1:
             self.numsection = 25
             self.second = 30
         elif case == 2:
@@ -613,7 +610,7 @@ if __name__ == "__main__":
 
     plt.style.use('seaborn-whitegrid')
 
-    case = int(input('case : '))
+    case = int(input('case 1 -> 25 zones, 2 -> 8 zones, 3 -> 4 zones, 4 -> 2 zones, 5 -> 1 zone(Z-CMM) \ncase : '))
     episode = 50
     revenue_record, profit_record = [], []
 
@@ -650,14 +647,6 @@ if __name__ == "__main__":
 
         env = Platform(case)
         env.gu_list = gu_list
-
-    x = np.arange(len(supply_minus_demand))
-    plt.figure(1)
-    plt.plot(x,supply_minus_demand)
-    plt.title('Number of supply - Number of demand in every each time')
-    plt.xlabel('time (1time = 30s)')
-    plt.ylabel('count')
-    plt.savefig('./graph/real_new_graph/matching_RL_' + str(numsection) + 'section_' + str(second) + 'second_supply_minus_demand.png')
 
     x = np.arange(len(revenue_record))
     plt.figure(2)
