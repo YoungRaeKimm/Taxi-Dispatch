@@ -8,5 +8,5 @@ IQL(Independent Q-Learning) - IQL.py</br>
 DDR(Distribution Difference Reward) - DDR.py</br>
 Z-CMM(Zone-agnostic CMM) - CMM.py</br>
 </br>
-Datas will be given if you contact me. </br>
+Preprocessed datas will be given if you contact me. </br>
 (my email : nahappy15@gmail.com)
